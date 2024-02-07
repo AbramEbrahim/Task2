@@ -1,0 +1,58 @@
+﻿
+@model IEnumerable<Blog>
+@{
+    Layout = "_DashBoard";
+}
+
+
+
+<div class="dash-content">
+    <div class="overview">
+        <div class="title">
+            <i class="uil uil-tachometer-fast-alt"></i>
+            <span class="text">All Blogs</span>
+        </div>
+    </div>
+    <div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <td class="table-light">id</td>
+                    <td class="table-light">Name</td>
+                    <td class="table-light">Description</td>
+                    <td class="table-light">Type</td>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var blog in Model)
+                {
+                    <tr>
+                        <td>@blog.Id</td>
+                        <td>@blog.Name</td>
+                        <td>@blog.Description</td>
+                        <td>@blog.type</td>
+                        <td>
+                            <a asp-action="EditeBlog" asp-route-id="@blog.Id" class="btn btn-success" role="button">
+                                <span class="material-symbols-outlined">
+                                    Edit
+                                </span>
+                            </a>
+                            <a asp-action="DeleteBlog" asp-route-id="@blog.Id" class="btn btn-danger " role="button">
+                                <span class="material-symbols-outlined">
+                                    delete
+                                </span>
+                            </a>
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+
+
+
+
+</div>
