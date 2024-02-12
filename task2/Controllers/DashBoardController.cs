@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using task2.Models;
+using task2.Models.data;
 
 namespace task2.Controllers
 {
@@ -7,7 +9,18 @@ namespace task2.Controllers
     {
         private static List<Blog> _blog = new List<Blog>();
 
+        private static List<Company> _company = new List<Company>();
+
         private static List<Product> _product = new List<Product>();
+        private readonly ApplicationDbContext _db;
+
+        public DashBoardController(ApplicationDbContext db)
+        {
+            _company.Add(new Company { Id = 1, Name = "Niki" });
+            _company.Add(new Company { Id = 2, Name = "Addidas" });
+
+            _db = db;
+        }
 
         public IActionResult Index()
         {
@@ -21,30 +34,24 @@ namespace task2.Controllers
         [HttpPost]
         public IActionResult AddProduct(Product product)
         {
-            int id;
-            if (_product.Count == 0)
-            {
-                id = 1;
-            }
-            else
-            {
-                id = _product.Max(x => x.Id) + 1;
-            }
-            product.Id = id;
-            _product.Add(product);
+            _db.Products.Add(product);
+            _db.SaveChanges();
             return RedirectToAction("index");
         }
         #region GetAll
         public IActionResult GetAllData()
         {
-            return View(_product);
+            var product=_db.Products.Include(p=>p.company).ToList();
+            return View(product);
+
         }
         #endregion
 
         #region delet
         public IActionResult DeletProduct(int id) {
-            Product product = _product.FirstOrDefault(x => x.Id == id);
-            _product.Remove(product);
+            Product? product = _db.Products.FirstOrDefault(x => x.Id == id);
+            _db.Products.Remove(product);
+            _db.SaveChanges();
             return RedirectToAction("GetAllData");
         }
         #endregion
@@ -54,7 +61,7 @@ namespace task2.Controllers
         public IActionResult EditProduct(int id)
         {
 
-            Product product = _product.FirstOrDefault(x => x.Id == id);
+            Product product = _db.Products.FirstOrDefault(x => x.Id == id);
          
             return View(product);
 
@@ -63,16 +70,17 @@ namespace task2.Controllers
         public IActionResult EditProduct(Product product)
         {
 
-            Product product2 = _product.SingleOrDefault(x => x.Id == product.Id);
+            Product product2 = _db.Products.SingleOrDefault(x => x.Id == product.Id);
 
+            product2.Name = product.Name;
             product2.price = product.price;
             product2.Quantity= product.Quantity;
             product2.Quantity=product.Quantity;
             product2.EnablSize= product.EnablSize;  
-            product2.company.Id = product.company.Id;
-            product2.Name = product.Name;
             product2.Description = product.Description;
-
+            product2.CompanyId = product.CompanyId;
+            _db.Products.Update(product2);
+            _db.SaveChanges();
             return RedirectToAction("index");
 
         }

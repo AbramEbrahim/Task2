@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace task2.Models
 {
@@ -12,6 +13,8 @@ namespace task2.Models
         public int Quantity { get; set; }
         public bool EnablSize { get; set; }
         
+        public int CompanyId { get; set; }
+        [ForeignKey("CompanyId")]
         public Company company { get; set; }
     }
 }
