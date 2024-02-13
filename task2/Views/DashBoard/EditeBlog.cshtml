@@ -36,17 +36,17 @@
                 
                 
                 <div class="mb-3 col-lg-6">
-                    <label asp-for="type.Id" class="form-label">Type</label>
+                    <label asp-for="TypeId" class="form-label">Type</label>
                     <select class="form-select "
-                            asp-for="type.Id">
+                            asp-for="TypeId">
                         @{
-                            if (Model.type.Id == 1)
+                            if (Model.TypeId == 1)
                             {
                                 <option>Select one</option>
                                 <option selected value="1">action</option>
                             <option value="2">comidy</option>
                             }
-                            else if (Model.type.Id == 2)
+                            else if (Model.TypeId == 2)
                             {
                                 <option>Select one</option>
                                 <option value="1">action</option>

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using task2.Models;
 using task2.Models.data;
+using Type = task2.Models.Type;
 
 namespace task2.Controllers
 {
@@ -9,15 +10,21 @@ namespace task2.Controllers
     {
         private static List<Blog> _blog = new List<Blog>();
 
+        private static List<Type> _type = new List<Type>();
+
         private static List<Company> _company = new List<Company>();
 
         private static List<Product> _product = new List<Product>();
         private readonly ApplicationDbContext _db;
 
+
         public DashBoardController(ApplicationDbContext db)
         {
             _company.Add(new Company { Id = 1, Name = "Niki" });
             _company.Add(new Company { Id = 2, Name = "Addidas" });
+            _type.Add(new Type { Id = 1, Name = "Action" });
+            _type.Add(new Type { Id = 2, Name = "Comidy" });
+
 
             _db = db;
         }
@@ -41,7 +48,7 @@ namespace task2.Controllers
         #region GetAll
         public IActionResult GetAllData()
         {
-            var product=_db.Products.Include(p=>p.company).ToList();
+            var product = _db.Products.Include(p => p.company).ToList();
             return View(product);
 
         }
@@ -62,7 +69,7 @@ namespace task2.Controllers
         {
 
             Product product = _db.Products.FirstOrDefault(x => x.Id == id);
-         
+
             return View(product);
 
         }
@@ -74,9 +81,8 @@ namespace task2.Controllers
 
             product2.Name = product.Name;
             product2.price = product.price;
-            product2.Quantity= product.Quantity;
-            product2.Quantity=product.Quantity;
-            product2.EnablSize= product.EnablSize;  
+            product2.Quantity = product.Quantity;
+            product2.EnablSize = product.EnablSize;
             product2.Description = product.Description;
             product2.CompanyId = product.CompanyId;
             _db.Products.Update(product2);
@@ -98,25 +104,20 @@ namespace task2.Controllers
         [HttpPost]
         public IActionResult AddBlog(Blog blog)
         {
-            int id;
-            if (_blog.Count == 0)
-            {
-                id = 1;
-            }
-            else
-            {
-                id = _blog.Max(x => x.Id) + 1;
-            }
-            blog.Id = id;
-            _blog.Add(blog);
+
+            _db.blogs.Add(blog);
+            _db.SaveChanges();
             return RedirectToAction("index");
         }
         #endregion
 
         #region GetBlog
-        public IActionResult GetBlog() { 
-        
-            return View(_blog);
+        public IActionResult GetBlog() {
+
+
+            var blog = _db.blogs.Include(p => p.type).ToList();
+
+            return View(blog);
 
         }
         #endregion
@@ -125,8 +126,9 @@ namespace task2.Controllers
         #region DeletBlog
         public IActionResult DeleteBlog(int id) {
 
-            Blog blog = _blog.SingleOrDefault(X => X.Id == id);
-            _blog.Remove(blog);
+            Blog blog = _db.blogs.SingleOrDefault(X => X.Id == id);
+            _db.blogs.Remove(blog);
+            _db.SaveChanges();
             return RedirectToAction("GetBlog");
         }
         #endregion
@@ -134,29 +136,28 @@ namespace task2.Controllers
 
         #region EditBlog
 
-        public IActionResult EditeBlog(int id) { 
-        
-        Blog blog = _blog.SingleOrDefault(x => x.Id ==id);   
-        return View(blog);
+        public IActionResult EditeBlog(int id) {
+
+            Blog blog = _db.blogs.SingleOrDefault(x => x.Id == id);
+            return View(blog);
         }
         [HttpPost]
         public IActionResult EditeBlog(Blog blog)
         {
 
-            Blog blog1 = _blog.SingleOrDefault(x => x.Id == blog.Id);
+            Blog blog1 = _db.blogs.SingleOrDefault(x => x.Id == blog.Id);
 
-            blog1.Name= blog.Name;
-            blog1.type.Id= blog.Id;
-            blog1.Description= blog.Description;
-
+            blog1.Name = blog.Name;
+            blog1.TypeId = blog.TypeId;
+            blog1.Description = blog.Description;
+            _db.Update(blog1);
+            _db.SaveChanges();
             return RedirectToAction("GetBlog");
         }
         #endregion
 
         #endregion
-
-
-
+    
     }
 
 } 

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using task2.Models.data;
 
@@ -10,9 +11,11 @@ using task2.Models.data;
 namespace task2.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240213082433_CreateTables")]
+    partial class CreateTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,6 +32,9 @@ namespace task2.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("BlogId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -37,12 +43,9 @@ namespace task2.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TypeId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("TypeId");
+                    b.HasIndex("BlogId");
 
                     b.ToTable("blogs");
                 });
@@ -126,25 +129,13 @@ namespace task2.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("types");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "action"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "comidy"
-                        });
                 });
 
             modelBuilder.Entity("task2.Models.Blog", b =>
                 {
                     b.HasOne("task2.Models.Type", "type")
                         .WithMany()
-                        .HasForeignKey("TypeId")
+                        .HasForeignKey("BlogId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
