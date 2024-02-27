@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using task2.Models;
+/*using task2.ViewModel;*/
 using task2.Models.data;
 using Type = task2.Models.Type;
 
@@ -36,11 +37,18 @@ namespace task2.Controllers
 
         public IActionResult AddProduct()
         {
+/*            var co=_db.Companies.ToList();
+            var ProdductView = new Product */ 
             return View();
         }
         [HttpPost]
         public IActionResult AddProduct(Product product)
         {
+
+            if (!ModelState.IsValid)
+            {
+                return View(product);
+            }
             _db.Products.Add(product);
             _db.SaveChanges();
             return RedirectToAction("index");
@@ -77,6 +85,11 @@ namespace task2.Controllers
         public IActionResult EditProduct(Product product)
         {
 
+            if (!ModelState.IsValid)
+            {
+                return View(product);
+            }
+
             Product product2 = _db.Products.SingleOrDefault(x => x.Id == product.Id);
 
             product2.Name = product.Name;
@@ -104,6 +117,10 @@ namespace task2.Controllers
         [HttpPost]
         public IActionResult AddBlog(Blog blog)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(blog) ;
+            }
 
             _db.blogs.Add(blog);
             _db.SaveChanges();
@@ -144,6 +161,10 @@ namespace task2.Controllers
         [HttpPost]
         public IActionResult EditeBlog(Blog blog)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(blog);
+            }
 
             Blog blog1 = _db.blogs.SingleOrDefault(x => x.Id == blog.Id);
 

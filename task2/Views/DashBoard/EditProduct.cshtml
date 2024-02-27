@@ -20,6 +20,7 @@
                            class="form-control"
                            value="@Model.Name"
                            placeholder="" />
+                           <span asp-validation-for="Name" class="text-danger"></span>
 
                 </div>
                 <div class="mb-3">
@@ -30,6 +31,8 @@
                               placeholder="">
                           @Model.Description
                           </textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+
                 </div>
                 <div class="mb-3 col-lg-6">
                     <label asp-for="Quantity" class="form-label">Product Quantity</label>
@@ -38,6 +41,8 @@
                            class="form-control"
                            value="@Model.Quantity"
                            placeholder=""></input>
+                    <span asp-validation-for="Quantity" class="text-danger"></span>
+
                 </div>
                 <div class="mb-3 col-lg-6">
                     <label asp-for="price" class="form-label">Product Price</label>
@@ -46,11 +51,15 @@
                            class="form-control"
                            value="@Model.price"
                            placeholder=""></input>
+                    <span asp-validation-for="price" class="text-danger"></span>
+
                 </div>
+
                 <div class="mb-3 col-lg-12 d-flex align-items-center mt-4">
                     <div class="form-check">
                         <label asp-for="EnablSize" class="form-check-label"> Enable Product Size </label>
                         <input asp-for="EnablSize" class="form-check-input" value="@Model.EnablSize type="checkbox">
+
                     </div>
 
 
@@ -81,6 +90,8 @@
                         }
                         
                     </select>
+                    <span asp-validation-for="CompanyId" class="text-danger"></span>
+
                 </div>
 
                 <div class="col-lg-12 d-flex justify-content-center  ">

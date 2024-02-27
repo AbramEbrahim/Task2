@@ -19,6 +19,7 @@
                            asp-for="Name"
                            class="form-control"
                            placeholder="" />
+                           <span asp-validation-for="Name" class="text-danger"></span>
 
                 </div>
                 <div class="mb-3">
@@ -27,6 +28,8 @@
                               type="text"
                               class="form-control"
                               placeholder=""></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+
                 </div>
 
                 <div class="mb-3 col-lg-6">
@@ -37,6 +40,8 @@
                         <option value="1">Action</option>
                         <option value="2">Comidy</option>
                     </select>
+                    <span asp-validation-for="TypeId" class="text-danger"></span>
+
                 </div>
 
                 <div class="col-lg-12 d-flex justify-content-center">
@@ -45,6 +50,8 @@
 
                 </div>
             </form>
+
+            <div asp-validation-summary="All"></div>
 
         </div>
     </div>

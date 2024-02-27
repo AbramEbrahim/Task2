@@ -22,6 +22,7 @@
                            class="form-control"
                            value="@Model.Name"
                            placeholder="" />
+                           <span asp-validation-for="Name" class="text-danger"></span>
 
                 </div>
                 <div class="mb-3">
@@ -32,6 +33,8 @@
                               placeholder="">
                         @Model.Description
                           </textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+
                 </div>
                 
                 
@@ -61,6 +64,8 @@
                         }
 
                     </select>
+                <span asp-validation-for="TypeId" class="text-danger"></span>
+
                 </div>
 
                 <div class="col-lg-12 d-flex justify-content-center  ">
